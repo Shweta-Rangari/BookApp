@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+  http://www.springframework.org/schema/beans/spring-beans.xsd
+  http://www.springframework.org/schema/context 
+  http://www.springframework.org/schema/context/spring-context.xsd
+  http://www.springframework.org/schema/tx 
+ 
+  http://www.springframework.org/schema/tx/spring-tx.xsd">
+
+	<!-- Root Context: defines shared resources visible to all other web components -->
+    
+	<context:component-scan base-package="com.bookstore" />
+	
+
+	<bean id="sessionFactory"
+		class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+
+		<property name="packagesToScan">
+			<list>
+				<value>com.bookstore.model</value>
+			</list>
+		</property>
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.hbm2ddl.auto">update</prop>
+				<prop key="hibernate.dialect">${sessionFactory.hibernate.dialect}</prop>
+				<prop key="hibernate.show_sql">false</prop>
+			</props>
+		</property>
+	</bean>
+
+	
+	
+	
+	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+	   <property name="driverClassName" value="org.apache.derby.jdbc.ClientDriver" />
+    	<property name="url" value="jdbc:derby://localhost:1527/db" />  
+	</bean>
+	
+	<bean id="bookDaoImpl" class="com.bookstore.dao.impl.BookDaoImpl">
+	   <property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+
+	<bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter">
+	<property name="messageConverters">
+	<list>
+	<ref bean="jsonMessageConverter"/>
+	</list>
+	</property>
+	</bean>
+	<bean id="jsonMessageConverter" class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+	</bean>
+
+
+	<tx:annotation-driven/> 
+	
+	<bean id="transactionManager" 
+	 class="org.springframework.orm.hibernate4.HibernateTransactionManager">
+	<property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+
+<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+ <property name="maxUploadSize" value="268435456"/>
+</bean>
+	
+
+</beans>
