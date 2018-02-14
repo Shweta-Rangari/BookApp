@@ -16,7 +16,7 @@ public class BookDaoImpl extends HibernateDaoSupport implements BookDao {
 		this.getSessionFactory().getCurrentSession().save(book);
 	}
 	public void updateBook(Book book) {
-		this.getSessionFactory().getCurrentSession().saveOrUpdate(book);
+		this.getSessionFactory().getCurrentSession().update(book);
 	}
 
 	@SuppressWarnings({ "unchecked", "deprecation" })
