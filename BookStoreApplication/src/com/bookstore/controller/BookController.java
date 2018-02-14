@@ -61,6 +61,30 @@ public class BookController {
 		bookService.saveBook(book);
 		return new ResponseEntity<String>("Book saved successfully!", HttpStatus.OK);
 	}
+	
+	@RequestMapping(value = ApplicationConstants.UPDATE_BOOK, method = RequestMethod.POST, consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<String> updateBook(@RequestParam(value = "file", required = true) MultipartFile file,
+			@RequestParam(value = ApplicationConstants.NAME, required = true) String name,
+			@RequestParam(value = ApplicationConstants.AUTHOR, required = true) String author,
+			@RequestParam(value = ApplicationConstants.PUBLISHEDON, required = true) String publishOn,
+			@RequestParam(value = ApplicationConstants.PRICE, required = true) String price,
+			@RequestParam(value = ApplicationConstants.CODE, required = true) String code ,
+			@RequestParam(value = ApplicationConstants.BOOK_ID, required = true) String bookId) throws Exception {
+
+		String sDate = publishOn;
+		Date date = (Date) new SimpleDateFormat("dd/MM/yyyy").parse(sDate);
+
+		Book book = new Book();
+		book.setId(Long.parseLong(bookId));
+		book.setName(name);
+		book.setAuthors(author);
+		book.setCode(code);
+		book.setBimage(file.getBytes());
+		book.setPrice(price);
+		book.setPublishedOn(date);
+		bookService.updateBook(book);
+		return new ResponseEntity<String>("Book saved successfully!", HttpStatus.OK);
+	}
 
 	@RequestMapping(value = ApplicationConstants.DELETE_BOOK, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<String> deleteBook(@PathVariable("bookId") Long id) {

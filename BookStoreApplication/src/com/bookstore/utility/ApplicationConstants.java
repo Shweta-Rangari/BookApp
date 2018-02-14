@@ -8,6 +8,7 @@ public interface ApplicationConstants {
 	String DEFAULT="/";
 	String DEFAULT_URI="/book";
 	String DELETE_BOOK="/delete/{bookId}";
+	String UPDATE_BOOK = "/update";
 	String BASE_URI="http://localhost:8088/BookStoreApplication/book";
 	String FILE_PATH="C:/Users/SR00539957/Downloads/book1.jpg";
 	String AUTHOR="author";
@@ -15,5 +16,7 @@ public interface ApplicationConstants {
 	String CODE="code";
 	String PUBLISHEDON="publishOn";
 	String PRICE="price";
+	String BOOK_ID = "bookId";
+	
 	
 }
